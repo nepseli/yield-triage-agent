@@ -13,6 +13,15 @@ a proof of concept built with AI assistance, not a production system.
 
 ## Architecture
 
+![Architecture overview: agent process, MCP server process with the policy gateway, human approval CLI, shared ticket store and audit log](docs/architecture-overview.png)
+
+Every `tools/call` passes the same gateway checks in order. A failure at any
+step is denied, and both outcomes are audited:
+
+![Policy gateway pipeline: budget, allowlist, size cap, schema, deadline, then wrap and mark untrusted; any failure is denied; both outcomes are written to the audit log](docs/policy-gateway-pipeline.png)
+
+Text version (Mermaid), kept in sync with the code:
+
 ```mermaid
 flowchart LR
     subgraph AgentProc[Agent process: no signing key]

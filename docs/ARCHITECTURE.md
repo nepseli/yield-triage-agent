@@ -59,6 +59,10 @@ of environment variables.
 
 ## 4. Diagram
 
+![Architecture overview](architecture-overview.png)
+
+Text version (Mermaid):
+
 ```mermaid
 flowchart LR
     subgraph AgentProc[Agent process: no signing key]
@@ -129,6 +133,8 @@ of the invalid fields when validation fails.
 Approve and commit are **not** MCP tools.
 
 ## 7. Policy gateway order
+
+![Policy gateway pipeline](policy-gateway-pipeline.png)
 
 1. **Budget.** Every attempt is counted, denials included.
 2. **Allowlist and scope.** The tool must be allowed by the profile, and the

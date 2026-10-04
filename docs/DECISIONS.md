@@ -183,3 +183,11 @@ The script checks every file that would be committed (tracked plus untracked,
 non-ignored), excluding `uv.lock` (hashes) and itself (it spells out the
 patterns). Two dummy test values carry `# pragma: allowlist secret`, the
 scanner's standard inline exception, so a reviewer can see each one.
+
+## D31. Rendered diagrams are images; the Mermaid text stays the source of truth
+`docs/architecture-overview.png` and `docs/policy-gateway-pipeline.png` were
+drawn in Eraser and exported for readability. Mermaid versions sit next to
+them in README and ARCHITECTURE, because text diffs well and anyone can edit
+it without a diagram tool account.
+Trade-off: the PNGs must be re-exported by hand when the architecture
+changes. Nothing checks them automatically.
