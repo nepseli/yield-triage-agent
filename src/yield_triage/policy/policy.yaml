@@ -1,0 +1,44 @@
+# Default-deny tool policy. Loaded by yield_triage.policy.config.
+# A tool that is not listed under the active profile's allowed_tools is denied
+# and audited, even if the server implements it. See docs/THREAT_MODEL.md.
+
+tools:
+  get_window_summary:    {scope: "read:analysis"}
+  rank_failing_sensors:  {scope: "read:analysis"}
+  check_sensor_drift:    {scope: "read:analysis"}
+  get_maintenance_notes: {scope: "read:analysis"}
+  propose_ticket:        {scope: "write:ticket_draft"}
+
+profiles:
+  # Full triage run: read tools plus the draft-only ticket proposal.
+  triage_run:
+    scopes: ["read:analysis", "write:ticket_draft"]
+    allowed_tools:
+      - get_window_summary
+      - rank_failing_sensors
+      - check_sensor_drift
+      - get_maintenance_notes
+      - propose_ticket
+  # Analysis only: no write scope at all.
+  read_only:
+    scopes: ["read:analysis"]
+    allowed_tools:
+      - get_window_summary
+      - rank_failing_sensors
+      - check_sensor_drift
+      - get_maintenance_notes
+
+limits:
+  max_tool_calls: 20       # per run, counting denied calls too
+  max_rows: 5000           # units a single tool call may scan
+  max_result_chars: 8000   # serialised result size returned to the model
+  run_timeout_s: 120       # wall clock per run, from server start
+  max_arg_chars: 4000      # whole serialised argument object
+
+analysis:
+  fdr_q: 0.05
+  min_fail_units: 10       # rank_failing_sensors refuses smaller windows
+  drift_baseline_units: 200  # units immediately before the window
+
+approval:
+  token_ttl_s: 900
